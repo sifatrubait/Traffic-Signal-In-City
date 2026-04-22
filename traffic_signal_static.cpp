@@ -1,4 +1,4 @@
-#include <windows.h>
+#include <windows.h>  // for MS Windows
 #include <iostream>
 #include <GL/glut.h>
 #include <math.h>
@@ -6,517 +6,1750 @@ using namespace std;
 
 #define PI 3.14159265358979323846
 
-GLfloat x, y, radius, twicePi;
+GLfloat x, y, radius, twicePi; // for circle
 int triangleAmount;
+
+int frameNumber = 1; // for windmill
+
+GLfloat position_b1 = -0.5f; // for boat1
+GLfloat speed_b1 = 0.002f;
+
+GLfloat position_b2 = -1.5f; // for boat2
+GLfloat speed_b2 = 0.002f;
+
+GLfloat position_r = -0.1f; // for river
+GLfloat speed_r = 0.01f;
+
+GLfloat position_s = 1.6f; // for smoke
+GLfloat speed_s = 0.01f;
+
+GLfloat position_c1 = 1.6f; // for car 1
+GLfloat speed_c1 = 0.01f;
+
+GLfloat position_c2 = 2.4f; // for car 2
+GLfloat speed_c2 = 0.01f;
+
+GLfloat position_c3 = -0.9f; // for car 3
+GLfloat speed_c3 = 0.01f;
+
+GLfloat position_c4 = 0.9f; // for car 4
+GLfloat speed_c4 = 0.01f;
+
 int cnt = 0;
+
 char *c;
 
-// ═════════════════════════════════════════════════════════════════
-// DRAWING PRIMITIVES
-// ═════════════════════════════════════════════════════════════════
+void windmill(){
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
 
-void drawCircle(GLfloat cx, GLfloat cy, GLfloat r, int R, int G, int B) {
-    x = cx; y = cy; radius = r;
+    glTranslatef(1.6, 0.3, 0.0);
+    glColor3ub(255, 102, 102); //base
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.80f, 0.275f);
+        glVertex2f(-0.80f, 0.25f);
+        glVertex2f(-0.65f, 0.25f);
+        glVertex2f(-0.65f, 0.275f);
+    glEnd();
+
+    glColor3ub(255, 255, 255); //body
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.775f, 0.5f);
+        glVertex2f(-0.79f, 0.275f);
+        glVertex2f(-0.66f, 0.275f);
+        glVertex2f(-0.675f, 0.5f);
+    glEnd();
+
+    glColor3ub(51, 153, 255); //door
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.71f, 0.35f);
+        glVertex2f(-0.71f, 0.275f);
+        glVertex2f(-0.74f, 0.275f);
+        glVertex2f(-0.74f, 0.35f);
+    glEnd();
+
+    glColor3ub(51, 153, 255); //window
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.71f, 0.45f);
+        glVertex2f(-0.71f, 0.4f);
+        glVertex2f(-0.74f, 0.4f);
+        glVertex2f(-0.74f, 0.45f);
+    glEnd();
+
+    glColor3ub(00, 102, 204); //head
+    glBegin(GL_TRIANGLES);
+        glVertex2f(-0.79f, 0.5f);
+        glVertex2f(-0.725f, 0.63f);
+        glVertex2f(-0.66f, 0.5f);
+    glEnd();
+
+    glTranslatef(-0.725f, 0.55f, 0.0f);
+    glRotated(frameNumber * (-180.0/500), 0, 0, 1);
+
+    glColor3ub(204, 229, 255);//wing1
+    glBegin(GL_POLYGON);
+        glVertex2f(0.00f, 0.01f);
+        glVertex2f(0.00f, 0.00f);
+        glVertex2f(0.20f, 0.00f);
+        glVertex2f(0.20f, 0.01f);
+    glEnd();
+
+    glColor3ub(255, 51, 51);
+    glBegin(GL_POLYGON);
+        glVertex2f(0.03f, 0.05f);
+        glVertex2f(0.03f, 0.01f);
+        glVertex2f(0.20f, 0.01f);
+        glVertex2f(0.20f, 0.05f);
+    glEnd();
+
+    glColor3ub(204, 229, 255); //wing2
+    glBegin(GL_POLYGON);
+        glVertex2f(0.00f, 0.01f);
+        glVertex2f(0.00f, 0.00f);
+        glVertex2f(-0.20f, 0.00f);
+        glVertex2f(-0.20f, 0.01f);
+    glEnd();
+
+    glColor3ub(255, 51, 51);
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.03f, -0.04f);
+        glVertex2f(-0.03f, -0.00f);
+        glVertex2f(-0.20f, -0.00f);
+        glVertex2f(-0.20f, -0.04f);
+    glEnd();
+
+    glRotatef(90,0.0f, 0.0f, 1.0f);
+    glColor3ub(204, 229, 255); //wing3
+    glBegin(GL_POLYGON);
+        glVertex2f(0.00f, 0.01f);
+        glVertex2f(0.00f, 0.00f);
+        glVertex2f(0.20f, 0.00f);
+        glVertex2f(0.20f, 0.01f);
+    glEnd();
+
+    glColor3ub(255, 51, 51);
+    glBegin(GL_POLYGON);
+        glVertex2f(0.03f, 0.05f);
+        glVertex2f(0.03f, 0.01f);
+        glVertex2f(0.20f, 0.01f);
+        glVertex2f(0.20f, 0.05f);
+    glEnd();
+
+    glColor3ub(204, 229, 255); //wing4
+    glBegin(GL_POLYGON);
+        glVertex2f(0.00f, 0.01f);
+        glVertex2f(0.00f, 0.00f);
+        glVertex2f(-0.20f, 0.00f);
+        glVertex2f(-0.20f, 0.01f);
+    glEnd();
+
+    glColor3ub(255, 51, 51);
+    glBegin(GL_POLYGON);
+        glVertex2f(-0.03f, -0.04f);
+        glVertex2f(-0.03f, -0.00f);
+        glVertex2f(-0.20f, -0.00f);
+        glVertex2f(-0.20f, -0.04f);
+    glEnd();
+
+    x=-0.0f; y=0.0f; radius =.02f;
     triangleAmount = 50;
     twicePi = 2.0f * PI;
-    glColor3ub(R, G, B);
+    glColor3ub(255, 51, 51);
     glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(x, y);
-    for(int i = 0; i <= triangleAmount; i++) {
-        glVertex2f(x + (radius * cos(i * twicePi / triangleAmount)),
-                   y + (radius * sin(i * twicePi / triangleAmount)));
-    }
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
     glEnd();
+    glLoadIdentity();
 }
-
-void drawLine(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2, int R, int G, int B) {
-    glColor3ub(R, G, B);
-    glBegin(GL_LINES);
-    glVertex2f(x1, y1);
-    glVertex2f(x2, y2);
-    glEnd();
-}
-
-// ═════════════════════════════════════════════════════════════════
-// TREES
-// ═════════════════════════════════════════════════════════════════
 
 void tree() {
-    // Tree 1 - Circle type (left)
+    // circle tree 1
     glLineWidth(10.0f);
-    drawLine(-1.5f, 0.8f, -1.5f, 0.55f, 153, 51, 51);
-    drawCircle(-1.45f, 0.82f, 0.08f, 0, 153, 51);
-    drawCircle(-1.5f, 0.85f, 0.08f, 0, 153, 51);
-    drawCircle(-1.55f, 0.82f, 0.08f, 0, 153, 51);
-    
+    glBegin(GL_LINES);
+        glColor3ub(153, 51, 51);
+        glVertex2f(-1.5f, 0.8f);
+        glVertex2f(-1.5f, 0.55f);
+    glEnd();
+    x=-1.45f; y=0.82f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+    x=-1.5f; y=0.85f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+    x=-1.55f; y=0.82f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+
     glPointSize(5.0);
-    glColor3f(1, 0, 0);
-    glBegin(GL_POINTS);
-    glVertex2f(-1.53f, 0.85f);
-    glVertex2f(-1.47f, 0.8f);
+    glBegin(GL_POINTS); // fruits
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex2f(-1.53f, 0.85f);
+        glVertex2f(-1.47f, 0.8f);
     glEnd();
 
-    // Tree 2 - Circle type (middle)
+    // circle tree 2
     glLineWidth(10.0f);
-    drawLine(-0.8f, 0.8f, -0.8f, 0.57f, 153, 51, 51);
-    drawCircle(-0.85f, 0.82f, 0.08f, 0, 153, 51);
-    drawCircle(-0.8f, 0.85f, 0.08f, 0, 153, 51);
-    drawCircle(-0.75f, 0.82f, 0.08f, 0, 153, 51);
-
-    // Tree 3 - Triangle type (right-up)
     glBegin(GL_LINES);
-    glColor3ub(153, 51, 51);
-    glVertex2f(1.55f, 0.65f);
-    glVertex2f(1.55f, 0.8f);
+        glColor3ub(153, 51, 51);
+        glVertex2f(-0.8f, 0.8f);
+        glVertex2f(-0.8f, 0.57f);
+    glEnd();
+    x=-0.85f; y=0.82f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+    x=-0.8f; y=0.85f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+    x=-0.75f; y=0.82f; radius =0.08f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 153, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(
+                x + (radius * cos(i *  twicePi / triangleAmount)),
+                y + (radius * sin(i * twicePi / triangleAmount))
+            );
+        }
+    glEnd();
+
+    // triangle tree 1
+    glBegin(GL_LINES);
+        glColor3ub(153, 51, 51);
+        glVertex2f(1.55f, 0.65f);
+        glVertex2f(1.55f, 0.8f);
     glEnd();
     glBegin(GL_TRIANGLES);
-    glColor3ub(0, 153, 51);
-    glVertex2f(1.45f, 0.7f);
-    glVertex2f(1.55f, 0.95f);
-    glVertex2f(1.65f, 0.7f);
+        glColor3ub(0, 153, 51);
+        glVertex2f(1.45f, 0.7f);
+        glVertex2f(1.55f, 0.95f);
+        glVertex2f(1.65f, 0.7f);
     glEnd();
 
-    // Tree 4 - Triangle type (center)
+    // triangle tree 2
     glBegin(GL_LINES);
-    glColor3ub(153, 51, 51);
-    glVertex2f(-0.2f, 0.65f);
-    glVertex2f(-0.2f, 0.8f);
+        glColor3ub(153, 51, 51);
+        glVertex2f(-0.2f, 0.65f);
+        glVertex2f(-0.2f, 0.8f);
     glEnd();
     glBegin(GL_TRIANGLES);
-    glColor3ub(0, 153, 51);
-    glVertex2f(-0.3f, 0.7f);
-    glVertex2f(-0.2f, 0.95f);
-    glVertex2f(-0.1f, 0.7f);
+        glColor3ub(0, 153, 51);
+        glVertex2f(-0.3f, 0.7f);
+        glVertex2f(-0.2f, 0.95f);
+        glVertex2f(-0.1f, 0.7f);
     glEnd();
 
-    // Tree 5 - Triangle type (right)
+    // triangle tree 3
     glBegin(GL_LINES);
-    glColor3ub(153, 51, 51);
-    glVertex2f(1.9f, 0.7f);
-    glVertex2f(1.9f, 0.85f);
+        glColor3ub(153, 51, 51);
+        glVertex2f(1.9f, 0.7f);
+        glVertex2f(1.9f, 0.85f);
     glEnd();
     glBegin(GL_TRIANGLES);
-    glColor3ub(0, 153, 51);
-    glVertex2f(1.8f, 0.75f);
-    glVertex2f(1.9f, 1.0f);
-    glVertex2f(2.0f, 0.75f);
-    glEnd();
-
-    // Tree 6 - Extra tree (new - far left)
-    glLineWidth(10.0f);
-    drawLine(-1.95f, 0.75f, -1.95f, 0.50f, 153, 51, 51);
-    drawCircle(-1.90f, 0.77f, 0.07f, 0, 153, 51);
-    drawCircle(-1.95f, 0.80f, 0.07f, 0, 153, 51);
-    drawCircle(-2.0f, 0.77f, 0.07f, 0, 153, 51);
-
-    // Tree 7 - Extra tree (new - far right)
-    glBegin(GL_LINES);
-    glColor3ub(153, 51, 51);
-    glVertex2f(2.1f, 0.65f);
-    glVertex2f(2.1f, 0.8f);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glColor3ub(0, 153, 51);
-    glVertex2f(2.0f, 0.7f);
-    glVertex2f(2.1f, 0.95f);
-    glVertex2f(2.2f, 0.7f);
+        glColor3ub(0, 153, 51);
+        glVertex2f(1.8f, 0.75f);
+        glVertex2f(1.9f, 1.0f);
+        glVertex2f(2.0f, 0.75f);
     glEnd();
 }
 
-// ═════════════════════════════════════════════════════════════════
-// SHOPS
-// ═════════════════════════════════════════════════════════════════
-
 void shop() {
-    // Left shop
-    glBegin(GL_POLYGON);
-    glColor3ub(255, 255, 255);
-    glVertex2f(-1.95f, 0.5f);
-    glVertex2f(-1.95f, 0.75f);
-    glVertex2f(-1.55f, 0.75f);
-    glVertex2f(-1.55f, 0.5f);
+    // left shop start
+    glBegin(GL_POLYGON); // body
+        glColor3ub(255, 255, 255);
+        glVertex2f(-1.95f, 0.5f);
+        glVertex2f(-1.95f, 0.75f);
+        glVertex2f(-1.55f, 0.75f);
+        glVertex2f(-1.55f, 0.5f);
+    glEnd();
+    glBegin(GL_POLYGON); // roof
+        glColor3ub(128, 0, 0);
+        glVertex2f(-1.95f, 0.75f);
+        glVertex2f(-1.95f, 0.85f);
+        glVertex2f(-1.55f, 0.85f);
+        glVertex2f(-1.55f, 0.75f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(128, 0, 0);
-    glVertex2f(-1.95f, 0.75f);
-    glVertex2f(-1.95f, 0.85f);
-    glVertex2f(-1.55f, 0.85f);
-    glVertex2f(-1.55f, 0.75f);
+    glBegin(GL_POLYGON); // shelter
+        glColor3ub(255, 0, 0);
+        glVertex2f(-2.0f, 0.65f);
+        glVertex2f(-1.5f, 0.65f);
+        glVertex2f(-1.5f, 0.7f);
+        glVertex2f(-1.55f, 0.75f);
+        glVertex2f(-1.95f, 0.75f);
+        glVertex2f(-2.0f, 0.7f);
     glEnd();
 
-    glColor3f(1, 1, 1);
-    c = "BFC";
-    glRasterPos2f(-1.8, 0.78);
-    for(int i = 0; c[i] != '\0'; i++)
+    glBegin(GL_POLYGON); // door
+        glColor3ub(0, 230, 230);
+        glVertex2f(-1.9f, 0.5f);
+        glVertex2f(-1.9f, 0.62f);
+        glColor3ub(0, 153, 153);
+        glVertex2f(-1.82f, 0.62f);
+        glVertex2f(-1.82f, 0.5f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // window
+        glColor3ub(0, 230, 230);
+        glVertex2f(-1.77f, 0.55f);
+        glVertex2f(-1.77f, 0.62f);
+        glColor3ub(0, 153, 153);
+        glVertex2f(-1.6f, 0.62f);
+        glVertex2f(-1.6f, 0.55f);
+    glEnd();
+
+    glBegin(GL_LINES);
+        glColor3ub(128, 0, 0);
+        glVertex2f(-1.52f, 0.5f);
+        glVertex2f(-1.98f, 0.5f);
+
+        glVertex2f(-1.524f, 0.504f);
+        glVertex2f(-1.98f, 0.504f);
+
+        glVertex2f(-1.9f, 0.5f); // door
+        glVertex2f(-1.9f, 0.62f);
+
+        glVertex2f(-1.9f, 0.62f);
+        glVertex2f(-1.82f, 0.62f);
+
+        glVertex2f(-1.82f, 0.62f);
+        glVertex2f(-1.82f, 0.5f);
+
+        glVertex2f(-1.82f, 0.5f);
+        glVertex2f(-1.9f, 0.5f);
+
+        glVertex2f(-1.82f, 0.55f);
+        glVertex2f(-1.9f, 0.55f);
+
+        glVertex2f(-1.77f, 0.55f); // window
+        glVertex2f(-1.77f, 0.62f);
+
+        glVertex2f(-1.77f, 0.62f);
+        glVertex2f(-1.6f, 0.62f);
+
+        glVertex2f(-1.6f, 0.62f);
+        glVertex2f(-1.6f, 0.55f);
+
+        glVertex2f(-1.6f, 0.55f);
+        glVertex2f(-1.77f, 0.55f);
+    glEnd();
+
+    glColor3f(1.0, 1.0, 1.0);
+    c="BFC";
+    glRasterPos2f(-1.8 , 0.78);
+    for(int i = 0; c[i] !='\0'; i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c[i]);
+    // left shop end
 
-    // Right shop
-    glBegin(GL_POLYGON);
-    glColor3ub(255, 204, 102);
-    glVertex2f(-0.75f, 0.5f);
-    glVertex2f(-0.75f, 0.8f);
-    glVertex2f(-0.2f, 0.8f);
-    glVertex2f(-0.2f, 0.5f);
+    // right shop start
+    glBegin(GL_POLYGON); // body
+        glColor3ub(255, 204, 102);
+        glVertex2f(-0.75f, 0.5f);
+        glVertex2f(-0.75f, 0.8f);
+        glVertex2f(-0.2f, 0.8f);
+        glVertex2f(-0.2f, 0.5f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(179, 89, 0);
-    glVertex2f(-0.75f, 0.85f);
-    glVertex2f(-0.75f, 0.8f);
-    glVertex2f(-0.2f, 0.8f);
-    glVertex2f(-0.2f, 0.85f);
+    glBegin(GL_POLYGON); // roof
+        glColor3ub(179, 89, 0);
+        glVertex2f(-0.75f, 0.85f);
+        glVertex2f(-0.75f, 0.8f);
+        glVertex2f(-0.2f, 0.8f);
+        glVertex2f(-0.2f, 0.85f);
+    glEnd();
+    glBegin(GL_POLYGON); // roof
+        glColor3ub(179, 89, 0);
+        glVertex2f(-0.3f, 0.85f);
+        glVertex2f(-0.35f, 0.9f);
+        glVertex2f(-0.6f, 0.9f);
+        glVertex2f(-0.66f, 0.85f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(77, 38, 0);
-    glVertex2f(-0.73f, 0.6f);
-    glVertex2f(-0.73f, 0.75f);
-    glVertex2f(-0.22f, 0.75f);
-    glVertex2f(-0.22f, 0.6f);
+    glBegin(GL_POLYGON); // inside
+        glColor3ub(77, 38, 0);
+        glVertex2f(-0.73f, 0.6f);
+        glVertex2f(-0.73f, 0.75f);
+        glVertex2f(-0.22f, 0.75f);
+        glVertex2f(-0.22f, 0.6f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(128, 64, 0);
-    glVertex2f(-0.73f, 0.5f);
-    glVertex2f(-0.73f, 0.6f);
-    glVertex2f(-0.22f, 0.6f);
-    glVertex2f(-0.22f, 0.5f);
+    glBegin(GL_POLYGON); // product
+        glColor3ub(255, 0, 0);
+        glVertex2f(-0.7f, 0.6f);
+        glVertex2f(-0.7f, 0.65f);
+        glVertex2f(-0.6f, 0.65f);
+        glVertex2f(-0.6f, 0.6f);
+    glEnd();
+    glBegin(GL_POLYGON); // product
+        glColor3ub(255, 204, 102);
+        glVertex2f(-0.65f, 0.65f);
+        glVertex2f(-0.65f, 0.68f);
+        glVertex2f(-0.6f, 0.68f);
+        glVertex2f(-0.6f, 0.65f);
+    glEnd();
+    glBegin(GL_POLYGON); // product
+        glColor3ub(255, 204, 102);
+        glVertex2f(-0.55f, 0.6f);
+        glVertex2f(-0.55f, 0.65f);
+        glVertex2f(-0.45f, 0.65f);
+        glVertex2f(-0.45f, 0.6f);
+    glEnd();
+    glBegin(GL_POLYGON); // product
+        glColor3ub(204, 0, 102);
+        glVertex2f(-0.4f, 0.6f);
+        glVertex2f(-0.4f, 0.65f);
+        glVertex2f(-0.35f, 0.6f);
+        glVertex2f(-0.35f, 0.65f);
+    glEnd();
+    glBegin(GL_POLYGON); // product
+        glColor3ub(255, 204, 102);
+        glVertex2f(-0.34f, 0.6f);
+        glVertex2f(-0.34f, 0.66f);
+        glVertex2f(-0.3f, 0.6f);
+        glVertex2f(-0.3f, 0.66f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // table
+        glColor3ub(128, 64, 0);
+        glVertex2f(-0.73f, 0.5f);
+        glVertex2f(-0.73f, 0.6f);
+        glVertex2f(-0.22f, 0.6f);
+        glVertex2f(-0.22f, 0.5f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // shelter
+        glColor3ub(230, 115, 0);
+        glVertex2f(-0.8f, 0.7f);
+        glVertex2f(-0.15f, 0.7f);
+        glVertex2f(-0.15f, 0.75f);
+        glVertex2f(-0.2f, 0.8f);
+        glVertex2f(-0.75f, 0.8f);
+        glVertex2f(-0.8f, 0.75f);
+    glEnd();
+
+    glBegin(GL_LINES);
+        glColor3ub(128, 0, 0);
+        glVertex2f(-0.17f, 0.5f);
+        glVertex2f(-0.77f, 0.5f);
+
+        glVertex2f(-0.17f, 0.504f);
+        glVertex2f(-0.77f, 0.504f);
+
+        glColor3ub(255, 153, 51);
+        glVertex2f(-0.73f, 0.6f);
+        glVertex2f(-0.22f, 0.6f);
     glEnd();
 
     glColor3ub(255, 255, 0);
-    c = "Candy Shop";
-    glRasterPos2f(-0.6, 0.84);
-    for(int i = 0; c[i] != '\0'; i++)
+    c="Candy Shop";
+    glRasterPos2f(-0.6 , 0.84);
+    for(int i = 0; c[i] !='\0'; i++)
         glutBitmapCharacter(GLUT_BITMAP_9_BY_15, c[i]);
+    // right shop end
 }
-
-// ═════════════════════════════════════════════════════════════════
-// HOUSES
-// ═════════════════════════════════════════════════════════════════
 
 void house() {
-    // Left house
-    glBegin(GL_POLYGON);
-    glColor3ub(224, 228, 231);
-    glVertex2f(-1.4f, 0.5f);
-    glVertex2f(-1.4f, 1.0f);
-    glVertex2f(-0.9f, 1.0f);
-    glVertex2f(-0.9f, 0.5f);
+    // left house start
+    glBegin(GL_POLYGON); // body
+        glColor3ub(224, 228, 231);
+        glVertex2f(-1.4f, 0.5f);
+        glVertex2f(-1.4f, 1.0f);
+        glVertex2f(-0.9f, 1.0f);
+        glVertex2f(-0.9f, 0.5f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(179, 230, 255);
-    glVertex2f(-1.35f, 0.55f);
-    glVertex2f(-1.35f, 0.65f);
-    glVertex2f(-1.25f, 0.65f);
-    glVertex2f(-1.25f, 0.55f);
+    glBegin(GL_POLYGON); // bottom-window 1
+        glColor3ub(179, 230, 255);
+        glVertex2f(-1.35f, 0.55f);
+        glVertex2f(-1.35f, 0.65f);
+        glColor3ub(0, 230, 230);
+        glVertex2f(-1.25f, 0.65f);
+        glVertex2f(-1.25f, 0.55f);
+    glEnd();
+    glBegin(GL_POLYGON); // bottom-window 2
+        glColor3ub(179, 230, 255);
+        glVertex2f(-1.05f, 0.55f);
+        glVertex2f(-1.05f, 0.65f);
+        glColor3ub(0, 230, 230);
+        glVertex2f(-0.95f, 0.65f);
+        glVertex2f(-0.95f, 0.55f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(179, 230, 255);
-    glVertex2f(-1.05f, 0.55f);
-    glVertex2f(-1.05f, 0.65f);
-    glVertex2f(-0.95f, 0.65f);
-    glVertex2f(-0.95f, 0.55f);
+    glBegin(GL_POLYGON); // top-window 1
+        glColor3ub(179, 230, 255);
+        glVertex2f(-1.35f, 0.85f);
+        glVertex2f(-1.35f, 0.95f);
+        glColor3ub(0, 230, 230);
+        glVertex2f(-1.25f, 0.95f);
+        glVertex2f(-1.25f, 0.85f);
+    glEnd();
+    glBegin(GL_POLYGON); // top-window 2
+        glColor3ub(179, 230, 255);
+        glVertex2f(-1.2f, 0.85f);
+        glVertex2f(-1.2f, 0.95f);
+        glColor3ub(0, 230, 230);
+        glVertex2f(-1.1f, 0.95f);
+        glVertex2f(-1.1f, 0.85f);
+    glEnd();
+    glBegin(GL_POLYGON); // top-window 3
+        glColor3ub(179, 230, 255);
+        glVertex2f(-1.05f, 0.85f);
+        glVertex2f(-1.05f, 0.95f);
+        glColor3ub(0, 230, 230);
+        glVertex2f(-0.95f, 0.95f);
+        glVertex2f(-0.95f, 0.85f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(179, 230, 255);
-    glVertex2f(-1.35f, 0.85f);
-    glVertex2f(-1.35f, 0.95f);
-    glVertex2f(-1.25f, 0.95f);
-    glVertex2f(-1.25f, 0.85f);
+    glBegin(GL_POLYGON); // door
+        glColor3ub(153, 153, 153);
+        glVertex2f(-1.2f, 0.5f);
+        glVertex2f(-1.2f, 0.65f);
+        glVertex2f(-1.1f, 0.65f);
+        glVertex2f(-1.1f, 0.5f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(153, 153, 153);
-    glVertex2f(-1.2f, 0.5f);
-    glVertex2f(-1.2f, 0.65f);
-    glVertex2f(-1.1f, 0.65f);
-    glVertex2f(-1.1f, 0.5f);
+    glPointSize(5.0); // door handle
+    glBegin(GL_POINTS);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glVertex2f(-1.17f, 0.58f);
     glEnd();
 
-    // Right house
-    glBegin(GL_POLYGON);
-    glColor3ub(153, 51, 0);
-    glVertex2f(-0.15f, 0.5f);
-    glVertex2f(-0.15f, 0.8f);
-    glVertex2f(0.35f, 0.8f);
-    glVertex2f(0.35f, 0.5f);
+    glBegin(GL_LINES);
+        glColor3ub(77, 195, 255);
+        glVertex2f(-1.35f, 0.55f); // bottom-window 1
+        glVertex2f(-1.35f, 0.65f);
+        glVertex2f(-1.35f, 0.65f);
+        glVertex2f(-1.25f, 0.65f);
+        glVertex2f(-1.25f, 0.65f);
+        glVertex2f(-1.25f, 0.55f);
+        glVertex2f(-1.25f, 0.55f);
+        glVertex2f(-1.35f, 0.55f);
+        glVertex2f(-1.25f, 0.6f);
+        glVertex2f(-1.35f, 0.6f);
+
+        glVertex2f(-1.05f, 0.55f); // bottom-window 2
+        glVertex2f(-1.05f, 0.65f);
+        glVertex2f(-1.05f, 0.65f);
+        glVertex2f(-0.95f, 0.65f);
+        glVertex2f(-0.95f, 0.65f);
+        glVertex2f(-0.95f, 0.55f);
+        glVertex2f(-0.95f, 0.55f);
+        glVertex2f(-1.05f, 0.55f);
+        glVertex2f(-0.95f, 0.6f);
+        glVertex2f(-1.05f, 0.6f);
+
+        glVertex2f(-1.35f, 0.85f); // top-window 1
+        glVertex2f(-1.35f, 0.95f);
+        glVertex2f(-1.35f, 0.95f);
+        glVertex2f(-1.25f, 0.95f);
+        glVertex2f(-1.25f, 0.95f);
+        glVertex2f(-1.25f, 0.85f);
+        glVertex2f(-1.25f, 0.85f);
+        glVertex2f(-1.35f, 0.85f);
+        glVertex2f(-1.25f, 0.9f);
+        glVertex2f(-1.35f, 0.9f);
+
+        glVertex2f(-1.2f, 0.85f); // top-window 2
+        glVertex2f(-1.2f, 0.95f);
+        glVertex2f(-1.2f, 0.95f);
+        glVertex2f(-1.1f, 0.95f);
+        glVertex2f(-1.1f, 0.95f);
+        glVertex2f(-1.1f, 0.85f);
+        glVertex2f(-1.1f, 0.85f);
+        glVertex2f(-1.2f, 0.85f);
+        glVertex2f(-1.1f, 0.9f);
+        glVertex2f(-1.2f, 0.9f);
+
+        glVertex2f(-1.05f, 0.85f); // top-window 3
+        glVertex2f(-1.05f, 0.95f);
+        glVertex2f(-1.05f, 0.95f);
+        glVertex2f(-0.95f, 0.95f);
+        glVertex2f(-0.95f, 0.95f);
+        glVertex2f(-0.95f, 0.85f);
+        glVertex2f(-0.95f, 0.85f);
+        glVertex2f(-1.05f, 0.85f);
+        glVertex2f(-0.95f, 0.9f);
+        glVertex2f(-1.05f, 0.9f);
+
+        glVertex2f(-1.2f, 0.5f); // door
+        glVertex2f(-1.2f, 0.65f);
+        glVertex2f(-1.2f, 0.65f);
+        glVertex2f(-1.1f, 0.65f);
+        glVertex2f(-1.1f, 0.65f);
+        glVertex2f(-1.1f, 0.5f);
+        glVertex2f(-1.1f, 0.5f);
+        glVertex2f(-1.2f, 0.5f);
+
+        // body
+        glColor3ub(128, 128, 128);
+        glVertex2f(-1.4f, 0.5f);
+        glVertex2f(-1.4f, 1.0f);
+        glVertex2f(-1.4f, 1.0f);
+        glVertex2f(-0.9f, 1.0f);
+        glVertex2f(-0.9f, 1.0f);
+        glVertex2f(-0.9f, 0.5f);
+
+        glColor3ub(128, 0, 0);
+        glVertex2f(-0.87f, 0.5f);
+        glVertex2f(-1.43f, 0.5f);
+        glVertex2f(-0.87f, 0.504f);
+        glVertex2f(-1.43f, 0.504f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(77, 184, 255);
-    glVertex2f(0.05f, 0.6f);
-    glVertex2f(0.05f, 0.7f);
-    glVertex2f(0.15f, 0.7f);
-    glVertex2f(0.15f, 0.6f);
+    glBegin(GL_POLYGON); // shelter
+        glColor3ub(76, 174, 218);
+        glVertex2f(-1.4f, 0.8f);
+        glVertex2f(-1.45f, 0.75f);
+        glVertex2f(-1.45f, 0.7f);
+        glVertex2f(-0.85f, 0.7f);
+        glVertex2f(-0.85f, 0.75f);
+        glVertex2f(-0.9f, 0.8f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(77, 184, 255);
-    glVertex2f(0.2f, 0.6f);
-    glVertex2f(0.2f, 0.7f);
-    glVertex2f(0.3f, 0.7f);
-    glVertex2f(0.3f, 0.6f);
+    glBegin(GL_LINES);
+        glColor3ub(128, 128, 128);
+        glVertex2f(-1.4f, 0.8f);
+        glVertex2f(-1.45f, 0.75f);
+        glVertex2f(-1.45f, 0.75f);
+        glVertex2f(-1.45f, 0.7f);
+        glVertex2f(-1.45f, 0.7f);
+        glVertex2f(-0.85f, 0.7f);
+        glVertex2f(-0.85f, 0.7f);
+        glVertex2f(-0.85f, 0.75f);
+        glVertex2f(-0.85f, 0.75f);
+        glVertex2f(-0.9f, 0.8f);
+        glVertex2f(-0.9f, 0.8f);
+        glVertex2f(-1.4f, 0.8f);
+    glEnd();
+    // left house end
+
+    // right house start
+    glBegin(GL_POLYGON); // body
+        glColor3ub(153, 51, 0);
+        glVertex2f(-0.15f, 0.5f);
+        glVertex2f(-0.15f, 0.8f);
+        glVertex2f(0.35f, 0.8f);
+        glVertex2f(0.35f, 0.5f);
+    glEnd();
+    glBegin(GL_POLYGON); // store room
+        glColor3ub(153, 51, 0);
+        glVertex2f(0.05f, 0.8f);
+        glVertex2f(0.05f, 0.99f);
+        glVertex2f(0.35f, 0.99f);
+        glVertex2f(0.35f, 0.8f);
     glEnd();
 
-    glBegin(GL_POLYGON);
-    glColor3ub(77, 77, 77);
-    glVertex2f(-0.1f, 0.5f);
-    glVertex2f(-0.1f, 0.65f);
-    glVertex2f(0.0f, 0.65f);
-    glVertex2f(0.0f, 0.5f);
+    glBegin(GL_POLYGON); // window 1
+        glColor3ub(77, 184, 255);
+        glVertex2f(0.05f, 0.6f);
+        glVertex2f(0.05f, 0.7f);
+        glColor3ub(26, 140, 255);
+        glVertex2f(0.15f, 0.7f);
+        glVertex2f(0.15f, 0.6f);
     glEnd();
+
+    glBegin(GL_POLYGON); // window 2
+        glColor3ub(77, 184, 255);
+        glVertex2f(0.2f, 0.6f);
+        glVertex2f(0.2f, 0.7f);
+        glColor3ub(26, 140, 255);
+        glVertex2f(0.3f, 0.7f);
+        glVertex2f(0.3f, 0.6f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // store room window
+        glColor3ub(77, 184, 255);
+        glVertex2f(0.15f, 0.85f);
+        glVertex2f(0.15f, 0.95f);
+        glColor3ub(26, 140, 255);
+        glVertex2f(0.25f, 0.95f);
+        glVertex2f(0.25f, 0.85f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // door
+        glColor3ub(77, 77, 77);
+        glVertex2f(-0.1f, 0.5f);
+        glVertex2f(-0.1f, 0.65f);
+        glVertex2f(0.0f, 0.65f);
+        glVertex2f(0.0f, 0.5f);
+    glEnd();
+
+    glPointSize(5.0); // door handle
+    glBegin(GL_POINTS);
+        glColor3f(1.0f, 1.0f, 1.0f);
+        glVertex2f(-0.03f, 0.6f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // door shelter
+        glColor3ub(230, 115, 0);
+        glVertex2f(0.02f, 0.65f);
+        glVertex2f(-0.05f, 0.7f);
+        glVertex2f(-0.12f, 0.65f);
+    glEnd();
+
+    glBegin(GL_LINES);
+        glColor3ub(255, 255, 255);
+        glVertex2f(0.15f, 0.85f);
+        glVertex2f(0.15f, 0.95f);
+        glVertex2f(0.15f, 0.95f);
+        glVertex2f(0.25f, 0.95f);
+        glVertex2f(0.25f, 0.95f);
+        glVertex2f(0.25f, 0.85f);
+        glVertex2f(0.25f, 0.85f);
+        glVertex2f(0.15f, 0.85f);
+
+        glVertex2f(0.05f, 0.6f);
+        glVertex2f(0.05f, 0.7f);
+        glVertex2f(0.05f, 0.7f);
+        glVertex2f(0.15f, 0.7f);
+        glVertex2f(0.15f, 0.7f);
+        glVertex2f(0.15f, 0.6f);
+        glVertex2f(0.15f, 0.6f);
+        glVertex2f(0.05f, 0.6f);
+
+        glVertex2f(0.2f, 0.6f);
+        glVertex2f(0.2f, 0.7f);
+        glVertex2f(0.2f, 0.7f);
+        glVertex2f(0.3f, 0.7f);
+        glVertex2f(0.3f, 0.7f);
+        glVertex2f(0.3f, 0.6f);
+        glVertex2f(0.3f, 0.6f);
+        glVertex2f(0.2f, 0.6f);
+
+        glColor3ub(255, 153, 51);
+        glVertex2f(-0.1f, 0.5f);
+        glVertex2f(-0.1f, 0.65f);
+        glVertex2f(-0.1f, 0.65f);
+        glVertex2f(0.0f, 0.65f);
+        glVertex2f(0.0f, 0.65f);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(0.0f, 0.5f);
+        glVertex2f(-0.1f, 0.5f);
+
+        glVertex2f(0.02f, 0.65f);
+        glVertex2f(-0.05f, 0.7f);
+        glVertex2f(-0.05f, 0.7f);
+        glVertex2f(-0.12f, 0.65f);
+        glVertex2f(-0.12f, 0.65f);
+        glVertex2f(0.02f, 0.65f);
+
+        glVertex2f(0.36f, 0.8f);
+        glVertex2f(-0.16f, 0.8f);
+        glVertex2f(0.36f, 0.84f);
+        glVertex2f(-0.16f, 0.84f);
+
+        glVertex2f(-0.16f, 0.504f);
+        glVertex2f(0.36f, 0.504f);
+        glVertex2f(-0.16f, 0.5f);
+        glVertex2f(0.36f, 0.5f);
+
+        glVertex2f(0.04f, 0.99f);
+        glVertex2f(0.36f, 0.99f);
+        glVertex2f(0.04f, 0.985f);
+        glVertex2f(0.36f, 0.985f);
+    glEnd();
+    // right house end
 }
 
-// ═════════════════════════════════════════════════════════════════
-// ROAD & FOOTPATH
-// ═════════════════════════════════════════════════════════════════
+void factory() {
+    // funnel
+    glBegin(GL_POLYGON);
+        glColor3ub(163, 136, 151);
+        glVertex2f(1.5f, -0.8f);
+        glVertex2f(1.55f, -0.4f);
+        glVertex2f(1.65f, -0.4f);
+        glVertex2f(1.7f, -0.8f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(231, 222, 225);
+        glVertex2f(1.54f, -0.5f);
+        glVertex2f(1.55f, -0.45f);
+        glVertex2f(1.65f, -0.45f);
+        glVertex2f(1.66f, -0.5f);
+    glEnd();
+    glBegin(GL_LINES);
+        glColor3ub(128, 0, 0);
+        glVertex2f(1.5f, -0.8f);
+        glVertex2f(1.55f, -0.4f);
+        glVertex2f(1.55f, -0.4f);
+        glVertex2f(1.65f, -0.4f);
+        glVertex2f(1.65f, -0.4f);
+        glVertex2f(1.7f, -0.8f);
+        glVertex2f(1.7f, -0.8f);
+        glVertex2f(1.5f, -0.8f);
+    glEnd();
+
+    // smoke
+    glPushMatrix();
+    glTranslatef(position_s, -0.05f, 0.0f);
+
+    x=0.0f; y=-0.21f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(217, 217, 217);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+    x=0.07f; y=-0.25f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(217, 217, 217);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+    x=0.0f; y=-0.28f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(217, 217, 217);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+    glPopMatrix();
+
+    // body
+    glBegin(GL_POLYGON);
+        glColor3ub(220, 170, 159);
+        glVertex2f(1.45f, -2.0f);
+        glVertex2f(1.45f, -0.7f);
+        glVertex2f(1.65f, -0.55f);
+        glVertex2f(1.65f, -2.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(220, 170, 159);
+        glVertex2f(1.65f, -2.0f);
+        glVertex2f(1.65f, -0.7f);
+        glVertex2f(1.85f, -0.55f);
+        glVertex2f(1.85f, -2.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(220, 170, 159);
+        glVertex2f(1.85f, -2.0f);
+        glVertex2f(1.85f, -0.7f);
+        glVertex2f(2.05f, -0.55f);
+        glVertex2f(2.05f, -2.0f);
+    glEnd();
+
+    // roof
+    glBegin(GL_POLYGON);
+        glColor3ub(192, 117, 124);
+        glVertex2f(1.45f, -0.7f);
+        glVertex2f(1.45f, -0.66f);
+        glVertex2f(1.6f, -0.55f);
+        glVertex2f(1.65f, -0.55f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(192, 117, 124);
+        glVertex2f(1.65f, -0.7f);
+        glVertex2f(1.65f, -0.66f);
+        glVertex2f(1.8f, -0.55f);
+        glVertex2f(1.85f, -0.55f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(192, 117, 124);
+        glVertex2f(1.85f, -0.7f);
+        glVertex2f(1.85f, -0.66f);
+        glVertex2f(2.0f, -0.55f);
+        glVertex2f(2.05f, -0.55f);
+    glEnd();
+
+    glBegin(GL_POLYGON); // window 1
+        glColor3ub(96, 82, 118);
+        glVertex2f(1.5f, -0.78f);
+        glVertex2f(1.5f, -0.7f);
+        glVertex2f(1.6f, -0.7f);
+        glVertex2f(1.6f, -0.78f);
+    glEnd();
+    glBegin(GL_POLYGON); // window 2
+        glColor3ub(96, 82, 118);
+        glVertex2f(1.7f, -0.78f);
+        glVertex2f(1.7f, -0.7f);
+        glVertex2f(1.8f, -0.7f);
+        glVertex2f(1.8f, -0.78f);
+    glEnd();
+    glBegin(GL_POLYGON); // window 3
+        glColor3ub(96, 82, 118);
+        glVertex2f(1.9f, -0.78f);
+        glVertex2f(1.9f, -0.7f);
+        glVertex2f(1.99f, -0.7f);
+        glVertex2f(1.99f, -0.78f);
+    glEnd();
+
+    glColor3ub(255, 217, 179);
+    char *P="F A C T O R Y";
+    glRasterPos2f(1.55f , -0.9);
+    for(int i = 0; P[i] !='\0'; i++)
+        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, P[i]);
+}
+
+void fence() {
+    glBegin(GL_LINES);
+        glColor3ub(204, 0, 0);
+        glVertex2f(-2.0f, 0.6f);
+        glVertex2f(0.39f, 0.6f);
+        glVertex2f(-2.0f, 0.53f);
+        glVertex2f(0.39f, 0.53f);
+        glVertex2f(-1.98f, 0.5f);
+        glVertex2f(-1.98f, 0.63f);
+        glVertex2f(-1.5f, 0.5f);
+        glVertex2f(-1.5f, 0.63f);
+        glVertex2f(-1.45f, 0.5f);
+        glVertex2f(-1.45f, 0.63f);
+        glVertex2f(-0.4f, 0.5f);
+        glVertex2f(-0.4f, 0.63f);
+        glVertex2f(-0.85f, 0.5f);
+        glVertex2f(-0.85f, 0.63f);
+        glVertex2f(-0.8f, 0.5f);
+        glVertex2f(-0.8f, 0.63f);
+        glVertex2f(-0.17f, 0.5f);
+        glVertex2f(-0.17f, 0.63f);
+        glVertex2f(0.37f, 0.5f);
+        glVertex2f(0.37f, 0.63f);
+
+        glVertex2f(2.0f, 0.6f);
+        glVertex2f(1.42f, 0.6f);
+        glVertex2f(2.0f, 0.53f);
+        glVertex2f(1.42f, 0.53f);
+        glVertex2f(1.95f, 0.5f);
+        glVertex2f(1.95f, 0.63f);
+        glVertex2f(1.9f, 0.5f);
+        glVertex2f(1.9f, 0.63f);
+        glVertex2f(1.85f, 0.5f);
+        glVertex2f(1.85f, 0.63f);
+        glVertex2f(1.8f, 0.5f);
+        glVertex2f(1.8f, 0.63f);
+        glVertex2f(1.75f, 0.5f);
+        glVertex2f(1.75f, 0.63f);
+        glVertex2f(1.7f, 0.5f);
+        glVertex2f(1.7f, 0.63f);
+        glVertex2f(1.65f, 0.5f);
+        glVertex2f(1.65f, 0.63f);
+        glVertex2f(1.6f, 0.5f);
+        glVertex2f(1.6f, 0.63f);
+        glVertex2f(1.55f, 0.5f);
+        glVertex2f(1.55f, 0.63f);
+        glVertex2f(1.5f, 0.5f);
+        glVertex2f(1.5f, 0.63f);
+        glVertex2f(1.45f, 0.5f);
+        glVertex2f(1.45f, 0.63f);
+    glEnd();
+}
 
 void road_footpath() {
-    // Main roads
+    // road
     glBegin(GL_POLYGON);
-    glColor3ub(95, 96, 91);
-    glVertex2f(-2.0f, 0.5f);
-    glVertex2f(2.0f, 0.5f);
-    glVertex2f(2.0f, -0.5f);
-    glVertex2f(-2.0f, -0.5f);
+        glColor3ub(95, 96, 91);
+        glVertex2f(-2.0f, 0.5f);
+        glVertex2f(2.0f, 0.5f);
+        glVertex2f(2.0f, -0.5f);
+        glVertex2f(-2.0f, -0.5f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(95, 96, 91);
+        glVertex2f(0.4f, 1.0f);
+        glVertex2f(1.4f, 1.0f);
+        glVertex2f(1.4f, -1.0f);
+        glVertex2f(0.4f, -1.0f);
     glEnd();
 
+    // footpath
     glBegin(GL_POLYGON);
-    glColor3ub(95, 96, 91);
-    glVertex2f(0.4f, 1.0f);
-    glVertex2f(1.4f, 1.0f);
-    glVertex2f(1.4f, -1.0f);
-    glVertex2f(0.4f, -1.0f);
+        glColor3ub(176, 191, 189);
+        glVertex2f(-2.0f, 0.5f);
+        glVertex2f(-2.0f, 0.3f);
+        glVertex2f(0.6f, 0.3f);
+        glVertex2f(0.6f, 0.5f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(-2.0f, -0.5f);
+        glVertex2f(-2.0f, -0.3f);
+        glVertex2f(0.6f, -0.3f);
+        glVertex2f(0.6f, -0.5f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(2.0f, -0.5f);
+        glVertex2f(2.0f, -0.3f);
+        glVertex2f(1.2f, -0.3f);
+        glVertex2f(1.2f, -0.5f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(2.0f, 0.5f);
+        glVertex2f(2.0f, 0.3f);
+        glVertex2f(1.2f, 0.3f);
+        glVertex2f(1.2f, 0.5f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(0.4f, -1.0f);
+        glVertex2f(0.6f, -1.0f);
+        glVertex2f(0.6f, -0.3f);
+        glVertex2f(0.4f, -0.3f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(1.2f, -1.0f);
+        glVertex2f(1.4f, -1.0f);
+        glVertex2f(1.4f, -0.3f);
+        glVertex2f(1.2f, -0.3f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(1.2f, 1.0f);
+        glVertex2f(1.4f, 1.0f);
+        glVertex2f(1.4f, 0.3f);
+        glVertex2f(1.2f, 0.3f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(176, 191, 189);
+        glVertex2f(0.4f, 1.0f);
+        glVertex2f(0.6f, 1.0f);
+        glVertex2f(0.6f, 0.3f);
+        glVertex2f(0.4f, 0.3f);
     glEnd();
 
-    // Footpaths
-    glBegin(GL_POLYGON);
-    glColor3ub(176, 191, 189);
-    glVertex2f(-2.0f, 0.5f);
-    glVertex2f(-2.0f, 0.3f);
-    glVertex2f(0.6f, 0.3f);
-    glVertex2f(0.6f, 0.5f);
-    glEnd();
-
-    glBegin(GL_POLYGON);
-    glColor3ub(176, 191, 189);
-    glVertex2f(-2.0f, -0.5f);
-    glVertex2f(-2.0f, -0.3f);
-    glVertex2f(0.6f, -0.3f);
-    glVertex2f(0.6f, -0.5f);
-    glEnd();
-
-    // Road markings
+    // divider
     glLineWidth(3.0f);
-    glColor3ub(255, 255, 255);
     glBegin(GL_LINES);
-    for(float x = -2.0f; x < 0.1f; x += 0.2f) {
-        glVertex2f(x, 0);
-        glVertex2f(x + 0.1f, 0);
-    }
+        glColor3ub(255, 255, 255);
+        glVertex2f(-2.0f, 0.0f); glVertex2f(-1.8f, 0.0f);
+        glVertex2f(-1.7f, 0.0f); glVertex2f(-1.5f, 0.0f);
+        glVertex2f(-1.4f, 0.0f); glVertex2f(-1.2f, 0.0f);
+        glVertex2f(-1.1f, 0.0f); glVertex2f(-0.9f, 0.0f);
+        glVertex2f(-0.8f, 0.0f); glVertex2f(-0.6f, 0.0f);
+        glVertex2f(-0.5f, 0.0f); glVertex2f(-0.3f, 0.0f);
+        glVertex2f(-0.2f, 0.0f); glVertex2f(0.0f, 0.0f);
+        glVertex2f(1.7f, 0.0f);  glVertex2f(1.9f, 0.0f);
+        glVertex2f(0.9f, 0.8f);  glVertex2f(0.9f, 0.97f);
+        glVertex2f(0.9f, -0.97f);glVertex2f(0.9f, -0.8f);
     glEnd();
 
-    // Zebra crossing
+    // zebra-crossing
     glLineWidth(5.0f);
     glBegin(GL_LINES);
-    glColor3ub(255, 255, 255);
-    glVertex2f(0.2f, 0.3f);
-    glVertex2f(0.2f, -0.3f);
-    glVertex2f(0.4f, -0.3f);
-    glVertex2f(0.4f, 0.3f);
+        glColor3ub(255, 255, 255);
+        glVertex2f(0.2f, 0.3f);  glVertex2f(0.2f, -0.3f);
+        glVertex2f(0.4f, -0.3f); glVertex2f(0.4f, 0.3f);
+        glVertex2f(0.6f, 0.5f);  glVertex2f(1.2f, 0.5f);
+        glVertex2f(0.6f, 0.7f);  glVertex2f(1.2f, 0.7f);
+        glVertex2f(1.4f, 0.3f);  glVertex2f(1.4f, -0.3f);
+        glVertex2f(1.6f, 0.3f);  glVertex2f(1.6f, -0.3f);
+        glVertex2f(0.6f, -0.5f); glVertex2f(1.2f, -0.5f);
+        glVertex2f(0.6f, -0.7f); glVertex2f(1.2f, -0.7f);
+    glEnd();
+
+    glLineWidth(10.0f);
+    glBegin(GL_LINES);
+        glColor3ub(255, 255, 255);
+        glVertex2f(0.2f, 0.2f);  glVertex2f(0.4f, 0.2f);
+        glVertex2f(0.2f, 0.1f);  glVertex2f(0.4f, 0.1f);
+        glVertex2f(0.2f, 0.0f);  glVertex2f(0.4f, 0.0f);
+        glVertex2f(0.2f, -0.1f); glVertex2f(0.4f, -0.1f);
+        glVertex2f(0.2f, -0.2f); glVertex2f(0.4f, -0.2f);
+        glVertex2f(1.4f, 0.2f);  glVertex2f(1.6f, 0.2f);
+        glVertex2f(1.4f, 0.1f);  glVertex2f(1.6f, 0.1f);
+        glVertex2f(1.4f, 0.0f);  glVertex2f(1.6f, 0.0f);
+        glVertex2f(1.4f, -0.1f); glVertex2f(1.6f, -0.1f);
+        glVertex2f(1.4f, -0.2f); glVertex2f(1.6f, -0.2f);
+        glVertex2f(0.7f, -0.5f); glVertex2f(0.7f, -0.7f);
+        glVertex2f(0.8f, -0.5f); glVertex2f(0.8f, -0.7f);
+        glVertex2f(0.9f, -0.5f); glVertex2f(0.9f, -0.7f);
+        glVertex2f(1.0f, -0.5f); glVertex2f(1.0f, -0.7f);
+        glVertex2f(1.1f, -0.5f); glVertex2f(1.1f, -0.7f);
+        glVertex2f(0.7f, 0.5f);  glVertex2f(0.7f, 0.7f);
+        glVertex2f(0.8f, 0.5f);  glVertex2f(0.8f, 0.7f);
+        glVertex2f(0.9f, 0.5f);  glVertex2f(0.9f, 0.7f);
+        glVertex2f(1.0f, 0.5f);  glVertex2f(1.0f, 0.7f);
+        glVertex2f(1.1f, 0.5f);  glVertex2f(1.1f, 0.7f);
+    glEnd();
+
+    // road border
+    glLineWidth(3.0f);
+    glBegin(GL_LINES);
+        glColor3ub(102, 102, 102);
+        glVertex2f(-2.0f, 0.5f);  glVertex2f(0.4f, 0.5f);
+        glVertex2f(0.4f, 0.5f);   glVertex2f(0.4f, 1.0f);
+        glVertex2f(1.4f, 1.0f);   glVertex2f(1.4f, 0.5f);
+        glVertex2f(1.4f, 0.5f);   glVertex2f(2.0f, 0.5f);
+        glVertex2f(2.0f, -0.5f);  glVertex2f(1.4f, -0.5f);
+        glVertex2f(1.4f, -0.5f);  glVertex2f(1.4f, -1.0f);
+        glVertex2f(0.4f, -1.0f);  glVertex2f(0.4f, -0.5f);
+        glVertex2f(0.4f, -0.5f);  glVertex2f(-2.0f, -0.5f);
+
+        glColor3ub(230, 230, 230);
+        glVertex2f(-2.0f, 0.3f);  glVertex2f(0.6f, 0.3f);
+        glVertex2f(0.6f, 0.3f);   glVertex2f(0.6f, 1.0f);
+        glVertex2f(1.2f, 1.0f);   glVertex2f(1.2f, 0.3f);
+        glVertex2f(1.2f, 0.3f);   glVertex2f(2.0f, 0.3f);
+        glVertex2f(2.0f, -0.3f);  glVertex2f(1.2f, -0.3f);
+        glVertex2f(1.2f, -0.3f);  glVertex2f(1.2f, -1.0f);
+        glVertex2f(0.6f, -1.0f);  glVertex2f(0.6f, -0.3f);
+        glVertex2f(0.6f, -0.3f);  glVertex2f(-2.0f, -0.3f);
     glEnd();
 }
-
-// ═════════════════════════════════════════════════════════════════
-// TRAFFIC LIGHTS
-// ═════════════════════════════════════════════════════════════════
 
 void traffic_light1() {
     glBegin(GL_POLYGON);
-    glColor3ub(128, 0, 0);
-    glVertex2f(0.45f, 0.38f);
-    glVertex2f(0.45f, 0.42f);
-    glVertex2f(0.55f, 0.42f);
-    glVertex2f(0.55f, 0.38f);
+        glColor3ub(128, 0, 0);
+        glVertex2f(0.45f, 0.38f);
+        glVertex2f(0.45f, 0.42f);
+        glVertex2f(0.55f, 0.42f);
+        glVertex2f(0.55f, 0.38f);
     glEnd();
-
     glLineWidth(5.0f);
-    drawLine(0.55f, 0.4f, 0.7f, 0.4f, 153, 0, 0);
-    drawLine(0.7f, 0.4f, 0.7f, 0.15f, 153, 0, 0);
+    glBegin(GL_LINES);
+        glColor3ub(153, 0, 0);
+        glVertex2f(0.55f, 0.4f);
+        glVertex2f(0.7f, 0.4f);
+        glVertex2f(0.7f, 0.4f);
+        glVertex2f(0.7f, 0.15f);
+    glEnd();
 
     glBegin(GL_POLYGON);
-    glColor3ub(204, 122, 0);
-    glVertex2f(0.65f, 0.15f);
-    glVertex2f(0.75f, 0.15f);
-    glVertex2f(0.75f, -0.05f);
-    glVertex2f(0.65f, -0.05f);
+        glColor3ub(204, 122, 0);
+        glVertex2f(0.65f, 0.15f);
+        glVertex2f(0.75f, 0.15f);
+        glVertex2f(0.75f, -0.05f);
+        glVertex2f(0.65f, -0.05f);
     glEnd();
 
-    // Traffic lights
-    if(cnt == 0) {
-        drawCircle(0.7f, 0.1f, 0.02f, 255, 51, 51);
-        drawCircle(0.7f, 0.05f, 0.02f, 255, 204, 0);
-        drawCircle(0.7f, 0.0f, 0.02f, 0, 128, 0);
-    } else {
-        drawCircle(0.7f, 0.1f, 0.02f, 204, 0, 0);
-        drawCircle(0.7f, 0.05f, 0.02f, 255, 204, 0);
-        drawCircle(0.7f, 0.0f, 0.02f, 0, 255, 0);
-    }
+    x=0.7f; y=0.1f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(204, 0, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=0.7f; y=0.05f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(255, 204, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=0.7f; y=0.0f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 128, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
 }
 
 void traffic_light2() {
     glBegin(GL_POLYGON);
-    glColor3ub(128, 0, 0);
-    glVertex2f(1.28f, -0.35f);
-    glVertex2f(1.32f, -0.35f);
-    glVertex2f(1.32f, -0.45f);
-    glVertex2f(1.28f, -0.45f);
+        glColor3ub(128, 0, 0);
+        glVertex2f(1.28f, -0.35f);
+        glVertex2f(1.32f, -0.35f);
+        glVertex2f(1.32f, -0.45f);
+        glVertex2f(1.28f, -0.45f);
     glEnd();
-
     glLineWidth(5.0f);
-    drawLine(1.3f, -0.35f, 1.3f, -0.2f, 153, 0, 0);
-    drawLine(1.3f, -0.2f, 1.0f, -0.2f, 153, 0, 0);
+    glBegin(GL_LINES);
+        glColor3ub(153, 0, 0);
+        glVertex2f(1.3f, -0.35f);
+        glVertex2f(1.3f, -0.2f);
+        glVertex2f(1.3f, -0.2f);
+        glVertex2f(1.0f, -0.2f);
+    glEnd();
 
     glBegin(GL_POLYGON);
-    glColor3ub(204, 122, 0);
-    glVertex2f(0.9f, -0.1f);
-    glVertex2f(1.0f, -0.1f);
-    glVertex2f(1.0f, -0.3f);
-    glVertex2f(0.9f, -0.3f);
+        glColor3ub(204, 122, 0);
+        glVertex2f(0.9f, -0.1f);
+        glVertex2f(1.0f, -0.1f);
+        glVertex2f(1.0f, -0.3f);
+        glVertex2f(0.9f, -0.3f);
     glEnd();
 
-    // Traffic lights
-    if(cnt == 0) {
-        drawCircle(0.95f, -0.15f, 0.02f, 204, 0, 0);
-        drawCircle(0.95f, -0.2f, 0.02f, 255, 204, 0);
-        drawCircle(0.95f, -0.25f, 0.02f, 0, 255, 0);
-    } else {
-        drawCircle(0.95f, -0.15f, 0.02f, 255, 51, 51);
-        drawCircle(0.95f, -0.2f, 0.02f, 255, 204, 0);
-        drawCircle(0.95f, -0.25f, 0.02f, 0, 128, 0);
-    }
-}
-
-// ═════════════════════════════════════════════════════════════════
-// FENCE
-// ═════════════════════════════════════════════════════════════════
-
-void fence() {
+    x=0.95f; y=-0.15f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
     glColor3ub(204, 0, 0);
-    glBegin(GL_LINES);
-    drawLine(-2.0f, 0.6f, 0.39f, 0.6f, 204, 0, 0);
-    drawLine(-2.0f, 0.53f, 0.39f, 0.53f, 204, 0, 0);
-    
-    float x_pos[] = {-1.98f, -1.5f, -1.45f, -0.4f, -0.85f, -0.8f, -0.17f, 0.37f};
-    for(float xp : x_pos) {
-        glVertex2f(xp, 0.5f);
-        glVertex2f(xp, 0.63f);
-    }
-    
-    drawLine(2.0f, 0.6f, 1.42f, 0.6f, 204, 0, 0);
-    drawLine(2.0f, 0.53f, 1.42f, 0.53f, 204, 0, 0);
-    
-    for(float xp = 1.45f; xp <= 1.96f; xp += 0.05f) {
-        glVertex2f(xp, 0.5f);
-        glVertex2f(xp, 0.63f);
-    }
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=0.95f; y=-0.2f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(255, 204, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=0.95f; y=-0.25f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 128, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
     glEnd();
 }
 
-// ═════════════════════════════════════════════════════════════════
-// RIVER
-// ═════════════════════════════════════════════════════════════════
+void road_light() {
+    glLineWidth(3.0f);
+    // left-up
+    glBegin(GL_LINES);
+        glColor3ub(128, 128, 128);
+        glVertex2f(-1.9f, 0.4f); glVertex2f(-1.8f, 0.4f);
+        glVertex2f(-1.8f, 0.4f); glVertex2f(-1.8f, 0.1f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(191, 191, 191);
+        glVertex2f(-1.85f, 0.25f);
+        glVertex2f(-1.8f, 0.25f);
+        glVertex2f(-1.8f, 0.1f);
+        glVertex2f(-1.85f, 0.1f);
+    glEnd();
+    glPointSize(10.0);
+    glBegin(GL_POINTS);
+        glColor3ub(89, 89, 89);
+        glVertex2f(-1.9f, 0.4f);
+    glEnd();
+
+    for(int i = 0; i < 3; i++) {
+        glTranslated(0.6, 0.0, 0.0);
+        glBegin(GL_LINES);
+            glColor3ub(128, 128, 128);
+            glVertex2f(-1.9f, 0.4f); glVertex2f(-1.8f, 0.4f);
+            glVertex2f(-1.8f, 0.4f); glVertex2f(-1.8f, 0.1f);
+        glEnd();
+        glBegin(GL_POLYGON);
+            glColor3ub(191, 191, 191);
+            glVertex2f(-1.85f, 0.25f);
+            glVertex2f(-1.8f, 0.25f);
+            glVertex2f(-1.8f, 0.1f);
+            glVertex2f(-1.85f, 0.1f);
+        glEnd();
+        glBegin(GL_POINTS);
+            glColor3ub(89, 89, 89);
+            glVertex2f(-1.9f, 0.4f);
+        glEnd();
+    }
+
+    // left-down
+    glBegin(GL_LINES);
+        glColor3ub(128, 128, 128);
+        glVertex2f(-1.6f, -0.4f); glVertex2f(-1.5f, -0.4f);
+        glVertex2f(-1.5f, -0.4f); glVertex2f(-1.5f, -0.1f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(191, 191, 191);
+        glVertex2f(-1.5f, -0.1f);
+        glVertex2f(-1.55f, -0.1f);
+        glVertex2f(-1.55f, -0.25f);
+        glVertex2f(-1.5f, -0.25f);
+    glEnd();
+    glBegin(GL_POINTS);
+        glColor3ub(89, 89, 89);
+        glVertex2f(-1.6f, -0.4f);
+    glEnd();
+
+    for(int i = 0; i < 3; i++){
+        glTranslated(-0.6, 0.0, 0.0);
+        glBegin(GL_LINES);
+            glColor3ub(128, 128, 128);
+            glVertex2f(-1.6f, -0.4f); glVertex2f(-1.5f, -0.4f);
+            glVertex2f(-1.5f, -0.4f); glVertex2f(-1.5f, -0.1f);
+        glEnd();
+        glBegin(GL_POLYGON);
+            glColor3ub(191, 191, 191);
+            glVertex2f(-1.5f, -0.1f);
+            glVertex2f(-1.55f, -0.1f);
+            glVertex2f(-1.55f, -0.25f);
+            glVertex2f(-1.5f, -0.25f);
+        glEnd();
+        glBegin(GL_POINTS);
+            glColor3ub(89, 89, 89);
+            glVertex2f(-1.6f, -0.4f);
+        glEnd();
+    }
+
+    // right-up
+    glBegin(GL_LINES);
+        glColor3ub(128, 128, 128);
+        glVertex2f(1.4f, 0.4f); glVertex2f(1.5f, 0.4f);
+        glVertex2f(1.5f, 0.4f); glVertex2f(1.5f, 0.1f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(191, 191, 191);
+        glVertex2f(1.5f, 0.1f);
+        glVertex2f(1.45f, 0.1f);
+        glVertex2f(1.45f, 0.25f);
+        glVertex2f(1.5f, 0.25f);
+    glEnd();
+    glBegin(GL_POINTS);
+        glColor3ub(89, 89, 89);
+        glVertex2f(1.4f, 0.4f);
+    glEnd();
+
+    // right-down
+    glBegin(GL_LINES);
+        glColor3ub(128, 128, 128);
+        glVertex2f(1.7f, -0.4f); glVertex2f(1.8f, -0.4f);
+        glVertex2f(1.8f, -0.4f); glVertex2f(1.8f, -0.1f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(191, 191, 191);
+        glVertex2f(1.8f, -0.1f);
+        glVertex2f(1.75f, -0.1f);
+        glVertex2f(1.75f, -0.25f);
+        glVertex2f(1.8f, -0.25f);
+    glEnd();
+    glBegin(GL_POINTS);
+        glColor3ub(89, 89, 89);
+        glVertex2f(1.7f, -0.4f);
+    glEnd();
+}
+
+void boat1() {
+    glPushMatrix();
+    glTranslatef(position_b1,0.0f, 0.0f);
+
+    glBegin(GL_POLYGON);
+        glColor3ub(255, 140, 26);
+        glVertex2f(-0.05f, -0.75f);
+        glVertex2f(-0.05f, -0.8f);
+        glVertex2f(0.1f, -0.8f);
+        glVertex2f(0.1f, -0.75f);
+    glEnd();
+
+    x=0.1f; y=-0.8f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(255, 140, 26);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=-0.05f; y=-0.8f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(179, 89, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(102, 51, 0);
+        glVertex2f(-0.25f, -0.8f);
+        glVertex2f(0.25f, -0.8f);
+        glVertex2f(0.15f, -0.85f);
+        glVertex2f(-0.15f, -0.85f);
+    glEnd();
+    glPopMatrix();
+}
+
+void boat2() {
+    glPushMatrix();
+    glTranslatef(position_b2,0.0f, 0.0f);
+
+    glBegin(GL_POLYGON);
+        glColor3ub(230, 230, 0);
+        glVertex2f(-0.05f, -0.6f);
+        glVertex2f(-0.05f, -0.65f);
+        glVertex2f(0.1f, -0.65f);
+        glVertex2f(0.1f, -0.6f);
+    glEnd();
+
+    x=0.1f; y=-0.65f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(153, 153, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=-0.05f; y=-0.65f; radius =.05f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(230, 230, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(0, 0, 0);
+        glVertex2f(-0.25f, -0.65f);
+        glVertex2f(0.25f, -0.65f);
+        glVertex2f(0.15f, -0.7f);
+        glVertex2f(-0.15f, -0.7f);
+    glEnd();
+    glPopMatrix();
+}
+
+void car1() {
+    glPushMatrix();
+    glTranslatef(position_c1, 0.0f, 0.0f);
+    glBegin(GL_POLYGON);
+        glColor3ub(230, 0, 0);
+        glVertex2f(-0.2f, 0.25f);
+        glVertex2f(0.07f, 0.25f);
+        glVertex2f(0.15f, 0.23f);
+        glVertex2f(0.17f, 0.2f);
+        glVertex2f(0.17f, 0.1f);
+        glVertex2f(0.15f, 0.07f);
+        glVertex2f(0.07f, 0.05f);
+        glVertex2f(-0.2f, 0.05f);
+        glVertex2f(-0.22f, 0.07f);
+        glVertex2f(-0.22f, 0.23f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(0, 0, 0);
+        glVertex2f(0.07f, 0.24f);
+        glVertex2f(0.07f, 0.06f);
+        glVertex2f(-0.18f, 0.06f);
+        glVertex2f(-0.18f, 0.24f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(230, 0, 0);
+        glVertex2f(0.03f, 0.09f);
+        glVertex2f(0.03f, 0.21f);
+        glVertex2f(-0.15f, 0.21f);
+        glVertex2f(-0.15f, 0.09f);
+    glEnd();
+    glPopMatrix();
+}
+
+void car2() {
+    glPushMatrix();
+    glTranslatef(position_c2, 0.0f, 0.0f);
+    glRotatef(180, 0.0f, 0.0f, 0.0f);
+    glBegin(GL_POLYGON);
+        glColor3ub(255, 204, 0);
+        glVertex2f(-0.04f, 0.25f);
+        glVertex2f(0.07f, 0.25f);
+        glVertex2f(0.15f, 0.23f);
+        glVertex2f(0.17f, 0.2f);
+        glVertex2f(0.17f, 0.1f);
+        glVertex2f(0.15f, 0.07f);
+        glVertex2f(0.07f, 0.05f);
+        glVertex2f(-0.04f, 0.05f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(0, 0, 0);
+        glVertex2f(0.07f, 0.24f);
+        glVertex2f(0.07f, 0.06f);
+        glVertex2f(-0.03f, 0.06f);
+        glVertex2f(-0.03f, 0.24f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(255, 204, 0);
+        glVertex2f(0.03f, 0.09f);
+        glVertex2f(0.03f, 0.21f);
+        glVertex2f(-0.07f, 0.21f);
+        glVertex2f(-0.07f, 0.09f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(242, 242, 242);
+        glVertex2f(-0.06f, 0.25f);
+        glVertex2f(-0.06f, 0.05f);
+        glVertex2f(-0.5f, 0.05f);
+        glVertex2f(-0.5f, 0.25f);
+    glEnd();
+    glPopMatrix();
+}
+
+void car3() {
+    glPushMatrix();
+    glTranslatef(0.9, position_c3, 0.0f);
+    glRotatef(90, 0.0f, 0.0f, 1.0f);
+    glBegin(GL_POLYGON);
+        glColor3ub(255, 255, 255);
+        glVertex2f(-0.13f, 0.25f);
+        glVertex2f(0.07f, 0.25f);
+        glVertex2f(0.15f, 0.23f);
+        glVertex2f(0.17f, 0.2f);
+        glVertex2f(0.17f, 0.1f);
+        glVertex2f(0.15f, 0.07f);
+        glVertex2f(0.07f, 0.05f);
+        glVertex2f(-0.13f, 0.05f);
+        glVertex2f(-0.15f, 0.07f);
+        glVertex2f(-0.15f, 0.23f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(0, 0, 0);
+        glVertex2f(0.07f, 0.24f);
+        glVertex2f(0.07f, 0.06f);
+        glVertex2f(-0.13f, 0.06f);
+        glVertex2f(-0.13f, 0.24f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(255, 255, 255);
+        glVertex2f(0.03f, 0.09f);
+        glVertex2f(0.03f, 0.21f);
+        glVertex2f(-0.1f, 0.21f);
+        glVertex2f(-0.1f, 0.09f);
+    glEnd();
+    glPopMatrix();
+}
+
+void car4() {
+    glPushMatrix();
+    glTranslatef(0.9f, position_c4, 0.0f);
+    glRotatef(270 ,0.0f, 0.0f, 1.0f);
+    glBegin(GL_POLYGON);
+        glColor3ub(51, 102, 255);
+        glVertex2f(-0.13f, 0.25f);
+        glVertex2f(0.07f, 0.25f);
+        glVertex2f(0.15f, 0.23f);
+        glVertex2f(0.17f, 0.2f);
+        glVertex2f(0.17f, 0.1f);
+        glVertex2f(0.15f, 0.07f);
+        glVertex2f(0.07f, 0.05f);
+        glVertex2f(-0.13f, 0.05f);
+        glVertex2f(-0.15f, 0.07f);
+        glVertex2f(-0.15f, 0.23f);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(0, 0, 0);
+        glVertex2f(0.07f, 0.24f);
+        glVertex2f(0.07f, 0.06f);
+        glVertex2f(-0.13f, 0.06f);
+        glVertex2f(-0.13f, 0.24f);
+    glEnd();
+    glBegin(GL_POLYGON);
+        glColor3ub(51, 102, 255);
+        glVertex2f(0.03f, 0.09f);
+        glVertex2f(0.03f, 0.21f);
+        glVertex2f(-0.1f, 0.21f);
+        glVertex2f(-0.1f, 0.09f);
+    glEnd();
+    glPopMatrix();
+}
 
 void river() {
     glBegin(GL_POLYGON);
-    glColor3ub(51, 204, 255);
-    glVertex2f(-2.0f, -1.0f);
-    glVertex2f(-2.0f, -0.55f);
-    glVertex2f(0.35f, -0.55f);
-    glVertex2f(0.35f, -2.0f);
+        glColor3ub(51, 204, 255);
+        glVertex2f(-2.0f, -1.0f);
+        glVertex2f(-2.0f, -0.55f);
+        glVertex2f(0.35f, -0.55f);
+        glVertex2f(0.35f, -2.0f);
     glEnd();
 
-    // River waves (static)
+    glPushMatrix();
+    glTranslatef(position_r,0.0f, 0.0f);
+
     float rx[] = {1.0f, 0.5f, 0.0f, -0.5f, -1.0f, -1.5f, -2.0f};
-    for(float xr : rx) {
-        drawCircle(xr, -1.3f, 0.6f, 0, 191, 255);
+    for(int j = 0; j < 7; j++) {
+        x=rx[j]; y=-1.3f; radius =0.6f;
+        triangleAmount = 50;
+        twicePi = 2.0f * PI;
+        glColor3ub(0, 191, 255);
+        glBegin(GL_TRIANGLE_FAN);
+            glVertex2f(x, y);
+            for(int i = 0; i <= triangleAmount;i++) {
+                glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                           y + (radius * sin(i * twicePi / triangleAmount)));
+            }
+        glEnd();
     }
+    glPopMatrix();
 }
 
-// ═════════════════════════════════════════════════════════════════
-// BOATS (STATIC)
-// ═════════════════════════════════════════════════════════════════
-
-void boats() {
-    // Boat 1
-    glBegin(GL_POLYGON);
-    glColor3ub(255, 140, 26);
-    glVertex2f(-0.3f, -0.75f);
-    glVertex2f(-0.3f, -0.8f);
-    glVertex2f(-0.15f, -0.8f);
-    glVertex2f(-0.15f, -0.75f);
+void redgreen1 () {
+    x=0.7f; y=0.1f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(255, 51, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
     glEnd();
 
-    drawCircle(-0.15f, -0.8f, 0.05f, 255, 140, 26);
-    drawCircle(-0.3f, -0.8f, 0.05f, 179, 89, 0);
-
-    // Boat 2
-    glBegin(GL_POLYGON);
-    glColor3ub(230, 230, 0);
-    glVertex2f(-0.75f, -0.6f);
-    glVertex2f(-0.75f, -0.65f);
-    glVertex2f(-0.6f, -0.65f);
-    glVertex2f(-0.6f, -0.6f);
+    x=0.95f; y=-0.25f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 255, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
     glEnd();
-
-    drawCircle(-0.6f, -0.65f, 0.05f, 153, 153, 0);
-    drawCircle(-0.75f, -0.65f, 0.05f, 230, 230, 0);
 }
 
-// ═════════════════════════════════════════════════════════════════
-// SCREEN DISPLAY
-// ═════════════════════════════════════════════════════════════════
+void redgreen2 () {
+    x=0.7f; y=0.0f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(0, 255, 0);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+
+    x=0.95f; y=-0.15f; radius =.02f;
+    triangleAmount = 50;
+    twicePi = 2.0f * PI;
+    glColor3ub(255, 51, 51);
+    glBegin(GL_TRIANGLE_FAN);
+        glVertex2f(x, y);
+        for(int i = 0; i <= triangleAmount;i++) {
+            glVertex2f(x + (radius * cos(i *  twicePi / triangleAmount)),
+                       y + (radius * sin(i * twicePi / triangleAmount)));
+        }
+    glEnd();
+}
 
 void start() {
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(1, 1, 1, 1);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glBegin(GL_POLYGON);
-    glColor3ub(255, 255, 0);
-    glVertex2f(-2, 2);
-    glColor3ub(147, 112, 219);
-    glVertex2f(2, 2);
-    glColor3ub(30, 144, 255);
-    glVertex2f(2, -2);
-    glColor3ub(70, 130, 180);
-    glVertex2f(-2, -2);
+        glColor3ub(255,255,0);
+        glVertex2f(-2.0f, 2.0f);
+        glColor3ub(147,112,219);
+        glVertex2f(2.0f, 2.0f);
+        glColor3ub(30,144,255);
+        glVertex2f(2.0f, -2.0f);
+        glColor3ub(70,130,180);
+        glVertex2f(-2.0f, -2.0f);
     glEnd();
 
     glColor3ub(255, 255, 255);
-    c = "Traffic Signal In The City";
-    glRasterPos2f(-0.25f, 0.7f);
-    for(int i = 0; c[i] != '\0'; i++)
+    c="Traffic  Signal  In  The  City";
+    glRasterPos2f(-0.3, 0.7);
+    for(int i = 0; c[i] !='\0'; i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c[i]);
 
     glColor3ub(0, 0, 0);
-    c = "Press 'R' = Red(Horizontal), Green(Vertical)";
-    glRasterPos2f(-0.5f, 0.2f);
-    for(int i = 0; c[i] != '\0'; i++)
+    c="Feature: \n-> Press 'R' = Turn on RED signal for HORIZONTAL road and Turn on GREEN signal for VERTICAL road. \n-> Press 'G' = Turn on GREEN signal for HORIZONTAL road and Turn on RED signal for VERTICAL road.";
+    float fx = 0.3f;
+    glRasterPos2f(-1.5, 0.3);
+    for(int i = 0; c[i] !='\0'; i++) {
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c[i]);
-
-    c = "Press 'G' = Green(Horizontal), Red(Vertical)";
-    glRasterPos2f(-0.5f, 0.0f);
-    for(int i = 0; c[i] != '\0'; i++)
-        glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c[i]);
+        if(c[i] == '\n')
+            glRasterPos2f(-1.5, fx = fx-0.1);
+    }
 
     glColor3ub(255, 0, 0);
-    c = "Press F to START";
-    glRasterPos2f(-0.15f, -0.7f);
-    for(int i = 0; c[i] != '\0'; i++)
+    c="Press F to START the project";
+    glRasterPos2f(-0.3, -0.7);
+    for(int i = 0; c[i] !='\0'; i++)
         glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, c[i]);
 
     glFlush();
@@ -527,60 +1760,192 @@ void day() {
 
     // Background
     glBegin(GL_POLYGON);
-    glColor3ub(51, 204, 51);
-    glVertex2f(2.0f, 1.0f);
-    glVertex2f(2.0f, -1.0f);
-    glVertex2f(-2.0f, -1.0f);
-    glVertex2f(-2.0f, 1.0f);
+        glColor3ub(51, 204, 51);
+        glVertex2f(2.0f, 1.0f);
+        glVertex2f(2.0f, -1.0f);
+        glVertex2f(-2.0f, -1.0f);
+        glVertex2f(-2.0f, 1.0f);
     glEnd();
 
     river();
-    boats();
+
+    glBegin(GL_POLYGON);
+        glColor3ub(51, 204, 51);
+        glVertex2f(0.35f, -0.5f);
+        glVertex2f(1.9f, -0.5f);
+        glVertex2f(1.9f, -1.0f);
+        glVertex2f(0.35f, -1.0f);
+    glEnd();
+
     tree();
     road_footpath();
+    car1();
+    car2();
+    car3();
+    car4();
     traffic_light1();
     traffic_light2();
+    road_light();
+    factory();
+
+    glPushMatrix();
+        windmill();
+    glPopMatrix();
+
     fence();
     shop();
     house();
+    boat1();
+    boat2();
 
-    // Shop sign
+    // shop open sign
     glBegin(GL_POLYGON);
-    glColor3ub(255, 255, 204);
-    glVertex2f(-1.72f, 0.57f);
-    glVertex2f(-1.72f, 0.6f);
-    glVertex2f(-1.65f, 0.6f);
-    glVertex2f(-1.65f, 0.57f);
+        glColor3ub(255, 255, 204);
+        glVertex2f(-1.72f, 0.57f);
+        glVertex2f(-1.72f, 0.6f);
+        glVertex2f(-1.65f, 0.6f);
+        glVertex2f(-1.65f, 0.57f);
     glEnd();
 
     glColor3ub(255, 51, 0);
-    c = "open";
-    glRasterPos2f(-1.715f, 0.58f);
-    for(int i = 0; c[i] != '\0'; i++)
+    c="open";
+    glRasterPos2f(-1.715 , 0.58);
+    for(int i = 0; c[i] !='\0'; i++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, c[i]);
+
+    if(cnt == 0)
+        redgreen2();
+    else
+        redgreen1();
 
     glFlush();
 }
 
-// ═════════════════════════════════════════════════════════════════
-// INPUT & SETUP
-// ═════════════════════════════════════════════════════════════════
+void update_car1(int value) {
+    if(cnt == 0){
+        speed_c1 = 0.01f;
+        if(position_c1 > 2.7)
+            position_c1 = -2.7f;
+        position_c1 += speed_c1;
+    } else {
+        if(position_c1 > 0.0) {
+            speed_c1 = 0.0f;
+            position_c1 = 0.0;
+        }
+        position_c1 += speed_c1;
+    }
+    glutPostRedisplay();
+    glutTimerFunc(10, update_car1, 0);
+}
+
+void update_car2(int value) {
+    if(cnt == 0) {
+        speed_c2 = 0.01f;
+        if(position_c2 < -2.7)
+            position_c2 = 2.7f;
+        position_c2 -= speed_c2;
+    } else {
+        if(position_c2 < 1.8) {
+            speed_c2 = 0.0f;
+            position_c2 = 1.8;
+        }
+        position_c2 -= speed_c2;
+    }
+    glutPostRedisplay();
+    glutTimerFunc(10, update_car2, 0);
+}
+
+void update_car3(int value) {
+    if(cnt == 0) {
+        if(position_c3 > -0.9) {
+            speed_c3 = 0.0f;
+            position_c3 = -0.9;
+        }
+        position_c3 += speed_c3;
+    } else {
+        speed_c3 = 0.01f;
+        if(position_c3 > 1.7)
+            position_c3 = -1.7f;
+        position_c3 += speed_c3;
+    }
+    glutPostRedisplay();
+    glutTimerFunc(10, update_car3, 0);
+}
+
+void update_car4(int value) {
+    if(cnt == 0) {
+        if(position_c4 < 0.9) {
+            speed_c4 = 0.0f;
+            position_c4 = 0.9;
+        }
+        position_c4 -= speed_c4;
+    } else {
+        speed_c4 = 0.01f;
+        if(position_c4 < -1.7)
+            position_c4 = 1.7f;
+        position_c4 -= speed_c4;
+    }
+    glutPostRedisplay();
+    glutTimerFunc(10, update_car4, 0);
+}
+
+void update_smoke(int value) {
+    if(position_s > 2.1)
+        position_s = 1.6f;
+    position_s += speed_s;
+    glutPostRedisplay();
+    glutTimerFunc(100, update_smoke, 0);
+}
+
+void update_river(int value) {
+    if(position_r < -0.5)
+        position_r = 0.0f;
+    position_r -= speed_r;
+    glutPostRedisplay();
+    glutTimerFunc(100, update_river, 0);
+}
+
+void update_boat1(int value) {
+    if(position_b1 < -2.0)
+        position_b1 = 0.0f;
+    position_b1 -= speed_b1;
+    glutPostRedisplay();
+    glutTimerFunc(100, update_boat1, 0);
+}
+
+void update_boat2(int value) {
+    if(position_b2 > 0.0)
+        position_b2 = -2.0f;
+    position_b2 += speed_b2;
+    glutPostRedisplay();
+    glutTimerFunc(100, update_boat2, 0);
+}
+
+void update_windmill(int v) {
+    frameNumber++;
+    glutPostRedisplay();
+    glutTimerFunc(30,update_windmill,0);
+}
 
 void button(unsigned char key, int x, int y) {
-    if(key == 'f') {
-        glutDisplayFunc(day);
-        glutPostRedisplay();
-    } else if(key == 'r') {
-        cnt = 1;
-        glutPostRedisplay();
-    } else if(key == 'g') {
-        cnt = 0;
-        glutPostRedisplay();
+    switch (key) {
+        case 'f':
+            glutDisplayFunc(day);
+            glutPostRedisplay();
+            break;
+        case 'r':
+            cnt++;
+            glutPostRedisplay();
+            break;
+        case 'g':
+            cnt = 0;
+            glutPostRedisplay();
+            break;
     }
 }
 
 void inigl() {
-    glClearColor(1, 1, 1, 1);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     gluOrtho2D(-2, 2, -1, 1);
 }
 
@@ -588,21 +1953,27 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
     glutInitWindowSize(1430, 800);
+    glutInitWindowPosition(0, 0);
     glutCreateWindow("Traffic Signal In The City");
 
-    cout << "═════════════════════════════════════════════\n";
-    cout << "  Traffic Signal In The City\n";
-    cout << "═════════════════════════════════════════════\n";
-    cout << "Controls:\n";
-    cout << "  F - Start\n";
-    cout << "  R - Red (Horizontal), Green (Vertical)\n";
-    cout << "  G - Green (Horizontal), Red (Vertical)\n";
-    cout << "═════════════════════════════════════════════\n";
+    cout << "Project Title: Traffic Signal In The City \n" << endl;
+    cout << "Group Member :" << endl;
+    cout << "Md Rubait Ahmed Sifat \t\t 0242310005101837" << endl;
 
     glutDisplayFunc(start);
     inigl();
-    glutKeyboardFunc(button);
-    glutMainLoop();
+    glutTimerFunc(30, update_windmill,0);
+    glutTimerFunc(100, update_boat1,0);
+    glutTimerFunc(100, update_boat2, 0);
+    glutTimerFunc(100, update_river, 0);
+    glutTimerFunc(100, update_smoke, 0);
+    glutTimerFunc(10, update_car1, 0);
+    glutTimerFunc(10, update_car2, 0);
+    glutTimerFunc(10, update_car3, 0);
+    glutTimerFunc(10, update_car4, 0);
 
+    glutKeyboardFunc(button);
+
+    glutMainLoop();
     return 0;
 }
